@@ -1,5 +1,7 @@
 love.window.setTitle("Candy Löve")
 
+local ui = require("ui")
+
 local all_strokes = {}
 local current_stroke = nil
 local wiggle = true
@@ -10,9 +12,15 @@ function love.load()
     love.graphics.setBackgroundColor(1,1,1)
     love.graphics.setLineStyle("smooth")
     love.graphics.setLineWidth(3)
+
+    ui.load()
 end
 
+
 function love.update(dt)
+
+    ui.update(dt)
+
     if love.mouse.isDown(1) and current_stroke ~= nil then
         local mouse_x, mouse_y = love.mouse.getPosition()
 
@@ -87,11 +95,17 @@ function love.draw()
             love.graphics.circle("fill", px, py, 1.5)
         end
     end
+    ui.draw()
 end
 
 function love.keypressed(key, scancode, isrepeat)
     if key == "w" then
         wiggle = not wiggle
+    end
+    if key == "s" then
+        if love.keyboard.isDown("lctrl") then
+            ui.toggle()
+        end
     end
     
     if key == "escape" then
